@@ -8,7 +8,7 @@ export function getPrivateKey(
     addressType?: "Base" | "Enterprise";
     accountIndex?: number;
     network?: Network;
-  } = { addressType: "Base", accountIndex: 0, network: "Mainnet" },
+  } = { addressType: "Base", accountIndex: 0, network: "Mainnet" }
 ): C.PrivateKey {
   function harden(num: number): number {
     if (typeof num !== "number") throw new Error("Type number required here!");
@@ -20,7 +20,7 @@ export function getPrivateKey(
     fromHex(entropy),
     options.password
       ? new TextEncoder().encode(options.password)
-      : new Uint8Array(),
+      : new Uint8Array()
   );
 
   const accountKey = rootKey
@@ -36,10 +36,9 @@ export function getPublicKey(seed: string) {
   const privateKey = getPrivateKey(seed);
   return toHex(privateKey.to_public().as_bytes());
 }
-
-console.log(
-  getPublicKey(
-    // place a seed phrase here
-    "",
-  ),
-);
+// console.log(
+//   getPublicKey(
+//     // place a seed phrase here
+//     ""
+//   )
+// );
