@@ -1,0 +1,1 @@
+{"entryFee":50n,"exitFee":60n}

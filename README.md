@@ -1,60 +1,77 @@
-## Pre-requisites
+## Manager Orders
 
-Run `bun install`.
+### How to sign the update fees orders
 
-### How to sign the update fees order
+When you want to update 'weights', 'user fees' or simply 'collect' from an MTK using "My wallet" page, you will need to enter a signature and a number (valid until/valid to). These values ​​can be obtained using the `pnpm run sign-fees` command.
 
-When you want to update 'weights', 'user fees' or simply 'collect fees' from an MTK using "My wallet" page, you will need to enter a signature and a number. These values ​​can be obtained from the `sign-fees.ts` file.
+#### Prerequisites
+
+If you want to update weights or user fees, you will need to have the `weights object` or `user fees object`. To get these objects, you can go to the Metera `/me` page and click on the "Copy weights as object" or "Copy fees as object" button.
+
+Make sure to complete the fields before copying the object.
+
+Example of a weights object:
+
+```json
+[
+  {
+    "asset": {
+      "asset_name": "0014df1055534441",
+      "policy_id": "a9fc2c980e6beed499b91089ca06ad433961a6238690219b8021fe43"
+    },
+    "info": {
+      "num": 50n,
+      "den": 100n
+    }
+  },
+  {
+    "asset": {
+      "asset_name": "0014df104d4554455241",
+      "policy_id": "a9fc2c980e6beed499b91089ca06ad433961a6238690219b8021fe43"
+    },
+    "info": {
+      "num": 35n,
+      "den": 100n
+    }
+  },
+  {
+    "asset": {
+      "asset_name": "0014df1048554e54",
+      "policy_id": "a9fc2c980e6beed499b91089ca06ad433961a6238690219b8021fe43"
+    },
+    "info": {
+      "num": 15n,
+      "den": 100n
+    }
+  },
+  ...
+]
+```
+
+Example of a user fees object:
+
+```json
+{
+  "entryFee": 50n,
+  "exitFee": 150n
+}
+```
+
+**NOTE**: 50n means 0.5% and 150n means 1.5%. If you want to update the fee to `x%`, you will need to enter `x`\*100.
+
+The format is not important. Just copy the object and paste it in the `input.txt` file in the `sign-fees/` folder.
 
 #### Steps
 
-1. Open the `sign-fees.ts` file, search `seed` constant and add the 'seed' with which you want to sign.
-2. If you want to sign:
-   - weights: go to `weightsMsg` and edit the list of tokens. You'll find the object with the tokens on the Metera `/me` page. Set the values ​​you want to update and click the "Copy weights as object" button. These tokens are in the same order as they are in the portfolio (see the database for more information). In the following example we update SUNDAE and FACT (as first and second token) with 30% and 70%
+1. Set your seed phrase in the `.env` file. See the `.env.example` file for the format. **Don't forget to rename the file to `.env`**.
+2. From the root folder, run `bun run sign-fees`.
+3. You will be asked to enter the action you want to perform.
+   ![](./sign-fees/images/select-action.png)
+   For example:
 
-   ```ts
-   const weightsUpdate = [
-     {
-       asset: {
-         asset_name: "0014df1053554e444145",
-         policy_id: "a9fc2c980e6beed499b91089ca06ad433961a6238690219b8021fe43",
-       },
-       info: { num: 30n, den: 100n },
-     },
-     {
-       asset: {
-         asset_name: "0014df106f7263666178746f6b656e",
-         policy_id: "a9fc2c980e6beed499b91089ca06ad433961a6238690219b8021fe43",
-       },
-       info: { num: 70n, den: 100n },
-     },
-   ];
-   ```
+   - If you want to update the weights, you will need to enter `1` or `weights`.
+   - If you want to update the user fees, you will need to enter `2` or `user`.
+   - If you want to collect fees, you will need to enter `3` or `collect`.
 
-   - user fess: go to `userFeesMsg` and edit the `fees` object. You'll find the object with the fees on the Metera `/me` page. Set the values ​​you want to update and click the "Copy fees as object" button. **NOTE**: If you want to update the exit fee to 2%, you the object will be `200n`, this is 2\*100, for a value of 0.5% it will be `50n`. In the following example, entry and exit fees are being set to 3% each:
-
-   ```ts
-   const fees = {
-     entryFee: 300n,
-     exitFee: 300n,
-   };
-   ```
-
-   - collect: **Should never be edited**
-
-3. Finally, `bun run sign-fees.ts` and select the action to perform.
-
-### How to get the public key
-
-1. Open `public-key.ts` and paste your seed phrase here:
-
-```ts
-console.log(
-  getPublicKey(
-    // place a seed phrase here
-    "",
-  ),
-);
-```
-
-2. Run `bun run public-key.ts`.
+4. If you complete the prerequisites, the script will return the signature and the number (valid until/valid to).
+5. Copy the values and paste them in the page to complete the form.
