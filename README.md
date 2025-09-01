@@ -1,4 +1,4 @@
-## Integration Test
+## Manager Orders
 
 ### How to sign the update fees orders
 
@@ -64,7 +64,7 @@ The format is not important. Just copy the object and paste it in the `input.txt
 #### Steps
 
 1. Set your seed phrase in the `.env` file. See the `.env.example` file for the format. **Don't forget to rename the file to `.env`**.
-2. From the `libraries/integration-tests` folder, run `pnpm run sign-fees`.
+2. From the root folder, run `pnpm run sign-fees`.
 3. You will be asked to enter the action you want to perform.
    ![](./sign-fees/images/select-action.png)
    For example:
